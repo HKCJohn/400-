@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>背词器</title>
+    <title>背词器 · 480词12题库</title>
     <style>
         * {
             margin: 0;
@@ -42,6 +42,9 @@
             --match-selected: #f4b942;
             --match-paired: #b8e1b5;
             --match-hover: #eaf3ff;
+            --close-btn-bg: rgba(30, 43, 60, 0.12);
+            --close-btn-hover: rgba(30, 43, 60, 0.22);
+            --close-btn-text: #1e2b3c;
         }
         body.theme-dark {
             --bg-start: #0f172a;
@@ -74,6 +77,9 @@
             --match-selected: #facc15;
             --match-paired: #166534;
             --match-hover: #3b4256;
+            --close-btn-bg: rgba(255, 255, 255, 0.15);
+            --close-btn-hover: rgba(255, 255, 255, 0.25);
+            --close-btn-text: #e2e8f0;
         }
         body.theme-warm {
             --bg-start: #fff3e0;
@@ -106,6 +112,9 @@
             --match-selected: #d97a2b;
             --match-paired: #cfe6cd;
             --match-hover: #ffe0cc;
+            --close-btn-bg: rgba(194, 126, 74, 0.20);
+            --close-btn-hover: rgba(194, 126, 74, 0.35);
+            --close-btn-text: #2c1a0e;
         }
         body.theme-charcoal {
             --bg-start: #1a1a1a;
@@ -138,6 +147,9 @@
             --match-selected: #ffb74d;
             --match-paired: #1e4a2e;
             --match-hover: #404040;
+            --close-btn-bg: rgba(255, 255, 255, 0.12);
+            --close-btn-hover: rgba(255, 255, 255, 0.22);
+            --close-btn-text: #e0e0e0;
         }
         body.theme-whitepink {
             --bg-start: #fff0f5;
@@ -170,6 +182,9 @@
             --match-selected: #f3a0b0;
             --match-paired: #d4f0d4;
             --match-hover: #ffe4ed;
+            --close-btn-bg: rgba(248, 160, 181, 0.30);
+            --close-btn-hover: rgba(248, 160, 181, 0.50);
+            --close-btn-text: #6a2e42;
         }
         body.theme-whitegreen {
             --bg-start: #f2fbf2;
@@ -202,6 +217,9 @@
             --match-selected: #b8d08b;
             --match-paired: #d0eed0;
             --match-hover: #dcf0dc;
+            --close-btn-bg: rgba(141, 184, 141, 0.30);
+            --close-btn-hover: rgba(141, 184, 141, 0.50);
+            --close-btn-text: #2d4a2d;
         }
 
         body {
@@ -237,6 +255,7 @@
         .sub {
             color: var(--footer);
             margin-bottom: 24px;
+            font-size: 0.9rem;
         }
         .option-group {
             background: var(--opt-bg);
@@ -249,6 +268,7 @@
             font-weight: 600;
             margin-bottom: 12px;
             color: var(--text);
+            font-size: 0.95rem;
         }
         .quiz-buttons,
         .theme-buttons {
@@ -267,7 +287,7 @@
             text-align: center;
             padding: 8px 6px;
             border-radius: 60px;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             transition: all 0.2s;
         }
         .quiz-btn.active,
@@ -275,6 +295,11 @@
             border-color: var(--gold);
             background: var(--gold);
             color: #1e2b3c;
+        }
+        .quiz-btn-small {
+            font-size: 0.72rem;
+            padding: 6px 4px;
+            min-width: 46px;
         }
         .start-btn,
         .notebook-btn {
@@ -341,6 +366,7 @@
             border-radius: 40px;
             color: var(--header-text);
             cursor: pointer;
+            font-size: 0.9rem;
         }
         .word-area {
             padding: 45px 20px 25px;
@@ -350,12 +376,18 @@
             cursor: pointer;
         }
         .english-word {
-            font-size: 3.6rem;
+            font-size: 3.2rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--word-start), var(--word-end));
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
+        }
+        .word-pos {
+            font-size: 1.1rem;
+            color: var(--footer);
+            margin-top: 4px;
+            font-weight: 500;
         }
         .badge-hint {
             margin-top: 12px;
@@ -450,6 +482,19 @@
             font-weight: 700;
             color: var(--text);
         }
+        .notebook-header .icon-btn {
+            background: var(--close-btn-bg);
+            border: 1px solid var(--border);
+            color: var(--close-btn-text);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .notebook-header .icon-btn:hover {
+            background: var(--close-btn-hover);
+        }
         .notebook-list {
             max-height: 65vh;
             overflow-y: auto;
@@ -478,6 +523,11 @@
             font-weight: 600;
             color: var(--text);
         }
+        .notebook-pos {
+            font-size: 0.75rem;
+            color: var(--footer);
+            margin-left: 4px;
+        }
         .notebook-zh {
             font-size: 0.9rem;
             color: var(--footer);
@@ -492,6 +542,9 @@
             }
             .notebook-item {
                 padding: 12px 20px;
+            }
+            .quiz-buttons {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
             }
         }
         .theme-switch-inline {
@@ -647,6 +700,12 @@
             border-color: var(--wrong-border);
             background: var(--wrong);
         }
+        .match-pos {
+            font-size: 0.7rem;
+            color: var(--footer);
+            display: block;
+            margin-top: 2px;
+        }
         @keyframes shake {
             0%,
             100% {
@@ -669,21 +728,46 @@
                 padding: 10px 8px;
             }
         }
+        .range-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+        }
+        .range-grid .quiz-btn {
+            font-size: 0.7rem;
+            padding: 6px 2px;
+        }
+        @media (max-width: 500px) {
+            .range-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
     </style>
 </head>
 <body class="theme-default">
     <div id="startScreen" class="screen start-card">
         <div class="logo">📚 背词器</div>
-        <div class="sub">题库4 (301-400) · 可选发音人 · 自动朗读</div>
+        <div class="sub">480词 · 12题库 · 可选发音人 · 自动朗读</div>
         <div class="option-group">
             <div class="group-title">📖 选择题库范围</div>
-            <div class="quiz-buttons" id="quizRangeSelector">
-                <div data-range="4" class="quiz-btn active">📗 题库4 (301-400)</div>
+            <div class="range-grid" id="quizRangeSelector">
+                <div data-range="1" class="quiz-btn quiz-btn-small active">1-40</div>
+                <div data-range="2" class="quiz-btn quiz-btn-small">41-80</div>
+                <div data-range="3" class="quiz-btn quiz-btn-small">81-120</div>
+                <div data-range="4" class="quiz-btn quiz-btn-small">121-160</div>
+                <div data-range="5" class="quiz-btn quiz-btn-small">161-200</div>
+                <div data-range="6" class="quiz-btn quiz-btn-small">201-240</div>
+                <div data-range="7" class="quiz-btn quiz-btn-small">241-280</div>
+                <div data-range="8" class="quiz-btn quiz-btn-small">281-320</div>
+                <div data-range="9" class="quiz-btn quiz-btn-small">321-360</div>
+                <div data-range="10" class="quiz-btn quiz-btn-small">361-400</div>
+                <div data-range="11" class="quiz-btn quiz-btn-small">401-440</div>
+                <div data-range="12" class="quiz-btn quiz-btn-small">441-480</div>
             </div>
         </div>
         <div class="option-group">
             <div class="group-title">🔀 单词出题顺序</div>
-            <div class="radio-row" style="display:flex;gap:16px;">
+            <div class="radio-row" style="display:flex;gap:16px;justify-content:center;">
                 <label><input type="radio" name="order" value="original" checked> 原始顺序</label>
                 <label><input type="radio" name="order" value="random"> 🎲 完全随机</label>
             </div>
@@ -710,8 +794,19 @@
         </div>
         <div class="option-group">
             <div class="group-title">📖 单词本范围</div>
-            <div class="quiz-buttons" id="notebookRangeSelector">
-                <div data-range="4" class="quiz-btn active">题库4</div>
+            <div class="range-grid" id="notebookRangeSelector">
+                <div data-range="1" class="quiz-btn quiz-btn-small active">1-40</div>
+                <div data-range="2" class="quiz-btn quiz-btn-small">41-80</div>
+                <div data-range="3" class="quiz-btn quiz-btn-small">81-120</div>
+                <div data-range="4" class="quiz-btn quiz-btn-small">121-160</div>
+                <div data-range="5" class="quiz-btn quiz-btn-small">161-200</div>
+                <div data-range="6" class="quiz-btn quiz-btn-small">201-240</div>
+                <div data-range="7" class="quiz-btn quiz-btn-small">241-280</div>
+                <div data-range="8" class="quiz-btn quiz-btn-small">281-320</div>
+                <div data-range="9" class="quiz-btn quiz-btn-small">321-360</div>
+                <div data-range="10" class="quiz-btn quiz-btn-small">361-400</div>
+                <div data-range="11" class="quiz-btn quiz-btn-small">401-440</div>
+                <div data-range="12" class="quiz-btn quiz-btn-small">441-480</div>
             </div>
         </div>
         <div class="option-group">
@@ -728,14 +823,14 @@
         <button class="start-btn" id="startGameBtn">✨ 开始学习 ✨</button>
         <button class="notebook-btn" id="openNotebookBtn">📖 单词本</button>
         <button class="wrongbook-btn" id="openWrongBookBtn">📕 错题本 (按错误次数排序)</button>
-        <footer style="margin-top:20px;">🎧 点击单词发声 · 6种主题 · 错词总结 · 题库4 · 配对模式</footer>
+        <footer style="margin-top:20px;">🎧 点击单词发声 · 6种主题 · 错词总结 · 12题库 · 配对模式</footer>
     </div>
 
     <div id="gameScreen" class="screen hide">
         <div class="stats-bar">
             <div class="progress-badge" id="progressText">第 1 / ? 词</div>
             <div class="score-badge" id="scoreText">✅ 答对: 0</div>
-            <div style="display:flex;gap:8px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
                 <button class="icon-btn" id="backToHomeBtn">🏠 首页</button>
                 <div class="theme-switch-inline" id="inlineThemeSwitcher">
                     <div class="tiny-theme color-default" data-theme="default" title="清新蓝"></div>
@@ -750,6 +845,7 @@
         <div id="standardGameArea">
             <div class="word-area" id="wordClickArea">
                 <div class="english-word" id="currentWord">nature</div>
+                <div class="word-pos" id="currentPos">(n.)</div>
                 <div class="badge-hint">🔊 点击单词 · 聆听发音</div>
             </div>
             <div class="options-area">
@@ -776,7 +872,7 @@
                 <button class="next-btn" id="matchNextBtn" disabled>➡ 下一回合</button>
             </div>
         </div>
-        <footer>📚 题库4 (301-400) · 支持配对模式</footer>
+        <footer>📚 480词 · 12题库 · 配对模式</footer>
     </div>
 
     <div id="notebookScreen" class="screen hide">
@@ -795,146 +891,517 @@
     </div>
     <script>
         (function() {
-            // 题库4 原始文本
-            const rawWordsText = `301. tattoo n. 纹身
-302. adjust v. 调节；调整
-303. emotional adj. 感情的
-304. nearby adj.&prep. (在) 附近的
-305. envelope n. 信封
-306. production n. 生产；制造
-307. virtual adj. 虚拟的
-308. location n. 位置；场所
-309. persuade v. 说服；劝服
-310. profit n. 利润；v. 获利；有益
-311. poet n. 诗人
-312. moral adj. 道德的
-313. overcome v. 战胜；克服
-314. constantly adv. 不断地
-315. pool n. 水池；台球
-316. partly adv. 部分地
-317. expose v. 显露
-318. global adj. 全世界的；全球的
-319. source n. 来源；出处
-320. original adj. 起初的；最早的
-321. Mars n. 火星
-322. commit v. 犯 (错误)；干 (坏事)
-323. entrance n. 入口
-324. global adj. 全球的
-325. reality n. 真实；现实
-326. rent n. 租金
-327. arrange v. 安排；准备
-328. excitement n. 兴奋；激动
-329. steam n. 蒸汽
-330. tremble v. 颤抖；发抖
-331. in case phr. 万一
-332. delay n.&v. 延迟；延误；延期
-333. remark v. 谈到；n. 言论
-334. trend n. 趋势；倾向
-335. atmosphere n. 大气；气氛
-336. serve n.&v. 服务；伺候
-337. settle v. 定居；安顿；解决
-338. exhibition n. 展览会
-339. youth n. 青春；年轻人
-340. journey n. 旅行；旅程
-341. sensitive adj. 敏感的；能理解的
-342. gentle adj. 和善的；温和的
-343. characteristic n. 特点；特性；adj. 典型的
-344. requirement n. 要求
-345. hesitate v. 犹豫；踌躇
-346. pile n.&v. 堆积
-347. sympathy n. 同情
-348. severe adj. 严厉的
-349. consumer n. 消费者
-350. firm n. 商行；公司；adj. 坚定的
-351. powerful adj. 强大的；有力的
-352. female adj. 女性的
-353. pattern n. 式样；模式
-354. unable adj. 不能的；不会的
-355. recognise v. 辨认出
-356. consequence n. 后果；结果
-357. suit n. 西装；v. 适合
-358. hire n.&v. 租用；雇用
-359. contribution n. 捐助；贡献
-360. acid n. 酸；adj. 酸性的
-361. expand v. 扩大；扩充
-362. range n. 变化范围；等级
-363. dust n. 灰尘；尘土
-364. tip n. 有用的意见；小费
-365. routine n. 常规；惯例
-366. lifestyle n. 生活方式
-367. flight n. 飞行；航班
-368. crime n. 犯罪；罪行
-369. eventually adv. 最终；终于
-370. attraction n. 吸引人的地方或事物
-371. shark n. 鲨鱼
-372. scream n. 尖叫声
-373. cyclist n. 骑自行车的人
-374. vocabulary n. 词汇；词汇量
-375. host n. 主人；v. 主持
-376. brand n. 商标；牌子
-377. editor n. 编辑；剪辑者
-378. band n. 乐队；v. 聚集；联合
-379. kindness n. 和善；亲切
-380. pace n. 速度；步速
-381. tend to phr. 经常做；倾向于
-382. witness n. 目击者；证人；v. 目击
-383. occur v. 发生
-384. astonish v. 使惊讶；使惊骇
-385. convince v. 使相信
-386. relevant adj. 有关的
-387. result in phr. 导致
-388. commercial n. (电视) 广告
-389. opening n. 开始
-390. official n. 官员；adj. 正式的；官方的
-391. concept n. 概念；原则
-392. reporter n. 记者；通讯员
-393. athlete n. 运动员
-394. flood n. 水灾；v. 淹没
-395. optimistic adj. 乐观的
-396. realistic adj. 现实（主义）的
-397. sweat n. 汗
-398. function n. 功能；v. 运行；活动
-399. appreciate v. 欣赏；鉴赏；感激
-400. customer n. 顾客`;
+            // ============================================================
+            // 480个单词完整数据 (1-480)
+            // 格式: { en: "单词", pos: "词性", zh: "中文" }
+            // ============================================================
+            const ALL_WORDS = [
+                { en: "graduation", pos: "n.", zh: "毕业" },
+                { en: "realize", pos: "v.", zh: "意识到" },
+                { en: "supposed", pos: "adj.", zh: "应当；假定的" },
+                { en: "bibliography", pos: "n.", zh: "参考书目" },
+                { en: "incomplete", pos: "adj.", zh: "不完整的" },
+                { en: "repaired", pos: "v.", zh: "修理（过去式）" },
+                { en: "apply", pos: "v.", zh: "申请；应用" },
+                { en: "loan", pos: "n.", zh: "贷款" },
+                { en: "scholarship", pos: "n.", zh: "奖学金" },
+                { en: "recently", pos: "adv.", zh: "最近" },
+                { en: "approved", pos: "v.", zh: "批准（过去式）" },
+                { en: "tournament", pos: "n.", zh: "锦标赛" },
+                { en: "reservations", pos: "n.", zh: "预订；保留" },
+                { en: "professors", pos: "n.", zh: "教授（复数）" },
+                { en: "application", pos: "n.", zh: "申请；应用" },
+                { en: "complete", pos: "adj./v.", zh: "完整的；完成" },
+                { en: "chemistry", pos: "n.", zh: "化学" },
+                { en: "lab", pos: "n.", zh: "实验室" },
+                { en: "withdrawn", pos: "v.", zh: "撤回（过去分词）" },
+                { en: "definitely", pos: "adv.", zh: "肯定地" },
+                { en: "drama", pos: "n.", zh: "戏剧" },
+                { en: "decided", pos: "v.", zh: "决定（过去式）" },
+                { en: "received", pos: "v.", zh: "收到（过去式）" },
+                { en: "neighbors", pos: "n.", zh: "邻居（复数）" },
+                { en: "deciding", pos: "v.", zh: "决定（现在分词）" },
+                { en: "enrolled", pos: "v.", zh: "注册（过去式）" },
+                { en: "understanding", pos: "n.", zh: "理解；了解" },
+                { en: "lectures", pos: "n.", zh: "讲座（复数）" },
+                { en: "preparing", pos: "v.", zh: "准备（现在分词）" },
+                { en: "project", pos: "n.", zh: "项目；课题" },
+                { en: "rewrite", pos: "v.", zh: "重写" },
+                { en: "suggested", pos: "v.", zh: "建议（过去式）" },
+                { en: "research", pos: "n./v.", zh: "研究" },
+                { en: "topic", pos: "n.", zh: "话题；主题" },
+                { en: "referring", pos: "v.", zh: "参考；提及（现在分词）" },
+                { en: "exhibit", pos: "n./v.", zh: "展览；展出" },
+                { en: "immediately", pos: "adv.", zh: "立即" },
+                { en: "rent", pos: "n./v.", zh: "租金；租用" },
+                { en: "accident", pos: "n.", zh: "事故" },
+                { en: "reschedule", pos: "v.", zh: "重新安排" },
+                { en: "psychology", pos: "n.", zh: "心理学" },
+                { en: "prevented", pos: "v.", zh: "防止（过去式）" },
+                { en: "pipe", pos: "n.", zh: "管道" },
+                { en: "laundry", pos: "n.", zh: "洗衣房；待洗衣物" },
+                { en: "career", pos: "n.", zh: "职业" },
+                { en: "appointment", pos: "n.", zh: "预约；任命" },
+                { en: "interviewed", pos: "v.", zh: "面试（过去式）" },
+                { en: "canceled", pos: "v.", zh: "取消（过去式）" },
+                { en: "attended", pos: "v.", zh: "参加（过去式）" },
+                { en: "economics", pos: "n.", zh: "经济学" },
+                { en: "calculator", pos: "n.", zh: "计算器" },
+                { en: "solve", pos: "v.", zh: "解决" },
+                { en: "figures", pos: "n.", zh: "数字；人物（复数）" },
+                { en: "paycheck", pos: "n.", zh: "薪水支票" },
+                { en: "delayed", pos: "v.", zh: "延迟（过去式）" },
+                { en: "complain", pos: "v.", zh: "抱怨" },
+                { en: "increased", pos: "v.", zh: "增加（过去式）" },
+                { en: "carbon", pos: "n.", zh: "碳" },
+                { en: "dioxide", pos: "n.", zh: "二氧化物" },
+                { en: "climate", pos: "n.", zh: "气候" },
+                { en: "reduce", pos: "v.", zh: "减少" },
+                { en: "atmosphere", pos: "n.", zh: "大气；气氛" },
+                { en: "nitrogen", pos: "n.", zh: "氮" },
+                { en: "exposure", pos: "n.", zh: "暴露；接触" },
+                { en: "soil", pos: "n.", zh: "土壤" },
+                { en: "protein", pos: "n.", zh: "蛋白质" },
+                { en: "nutritious", pos: "adj.", zh: "有营养的" },
+                { en: "crops", pos: "n.", zh: "农作物（复数）" },
+                { en: "development", pos: "n.", zh: "发展" },
+                { en: "decreases", pos: "v.", zh: "减少（第三人称单数）" },
+                { en: "resistance", pos: "n.", zh: "抵抗；阻力" },
+                { en: "diseases", pos: "n.", zh: "疾病（复数）" },
+                { en: "nutritional", pos: "adj.", zh: "营养的" },
+                { en: "value", pos: "n.", zh: "价值" },
+                { en: "ability", pos: "n.", zh: "能力" },
+                { en: "reproduce", pos: "v.", zh: "繁殖；复制" },
+                { en: "cultures", pos: "n.", zh: "文化；培养物（复数）" },
+                { en: "influence", pos: "n./v.", zh: "影响" },
+                { en: "mistaken", pos: "adj.", zh: "错误的" },
+                { en: "fourteenth-century", pos: "adj.", zh: "十四世纪的" },
+                { en: "travelogues", pos: "n.", zh: "旅行游记（复数）" },
+                { en: "availability", pos: "n.", zh: "可用性" },
+                { en: "scribes", pos: "n.", zh: "抄写员（复数）" },
+                { en: "European", pos: "adj./n.", zh: "欧洲的；欧洲人" },
+                { en: "accuracy", pos: "n.", zh: "准确性" },
+                { en: "precise", pos: "adj.", zh: "精确的" },
+                { en: "route", pos: "n.", zh: "路线" },
+                { en: "inspired", pos: "v.", zh: "激励（过去式）" },
+                { en: "undertake", pos: "v.", zh: "承担；从事" },
+                { en: "journey", pos: "n.", zh: "旅程" },
+                { en: "allowed", pos: "v.", zh: "允许（过去式）" },
+                { en: "translated", pos: "v.", zh: "翻译（过去式）" },
+                { en: "poetry", pos: "n.", zh: "诗歌" },
+                { en: "Arabic", pos: "adj./n.", zh: "阿拉伯的；阿拉伯语" },
+                { en: "Moroccan", pos: "adj./n.", zh: "摩洛哥的；摩洛哥人" },
+                { en: "Royal", pos: "adj.", zh: "皇家的" },
+                { en: "methods", pos: "n.", zh: "方法（复数）" },
+                { en: "measuring", pos: "n./v.", zh: "测量（现在分词）" },
+                { en: "increase", pos: "v./n.", zh: "增加" },
+                { en: "practical", pos: "adj.", zh: "实际的；实用的" },
+                { en: "academic", pos: "adj.", zh: "学术的" },
+                { en: "environments", pos: "n.", zh: "环境（复数）" },
+                { en: "evaluating", pos: "v.", zh: "评估（现在分词）" },
+                { en: "creative", pos: "adj.", zh: "创造性的" },
+                { en: "existing", pos: "adj.", zh: "现有的" },
+                { en: "imitate", pos: "v.", zh: "模仿" },
+                { en: "practices", pos: "n.", zh: "实践；惯例（复数）" },
+                { en: "scientists", pos: "n.", zh: "科学家（复数）" },
+                { en: "prove", pos: "v.", zh: "证明" },
+                { en: "theories", pos: "n.", zh: "理论（复数）" },
+                { en: "illustrate", pos: "v.", zh: "说明；阐明" },
+                { en: "compare", pos: "v.", zh: "比较" },
+                { en: "analytic", pos: "adj.", zh: "分析的" },
+                { en: "temporary", pos: "adj.", zh: "暂时的" },
+                { en: "author", pos: "n.", zh: "作者" },
+                { en: "identity", pos: "n.", zh: "身份；特性" },
+                { en: "admirable", pos: "adj.", zh: "值得赞赏的" },
+                { en: "courage", pos: "n.", zh: "勇气" },
+                { en: "judged", pos: "v.", zh: "判断（过去式）" },
+                { en: "political", pos: "adj.", zh: "政治的" },
+                { en: "novels", pos: "n.", zh: "小说（复数）" },
+                { en: "pseudonym", pos: "n.", zh: "笔名" },
+                { en: "associated", pos: "v./adj.", zh: "联系（过去式）；相关的" },
+                { en: "novelist", pos: "n.", zh: "小说家" },
+                { en: "criticized", pos: "v.", zh: "批评（过去式）" },
+                { en: "argue", pos: "v.", zh: "争论；主张" },
+                { en: "overthrown", pos: "v.", zh: "推翻（过去分词）" },
+                { en: "hero", pos: "n.", zh: "英雄" },
+                { en: "persuade", pos: "v.", zh: "说服" },
+                { en: "approve", pos: "v.", zh: "批准；赞同" },
+                { en: "constitution", pos: "n.", zh: "宪法；构成" },
+                { en: "independence", pos: "n.", zh: "独立" },
+                { en: "endorse", pos: "v.", zh: "支持；背书" },
+                { en: "particular", pos: "adj.", zh: "特别的；特定的" },
+                { en: "candidate", pos: "n.", zh: "候选人" },
+                { en: "president", pos: "n.", zh: "总统；校长" },
+                { en: "republic", pos: "n.", zh: "共和国" },
+                { en: "references", pos: "n.", zh: "参考；引用（复数）" },
+                { en: "law", pos: "n.", zh: "法律" },
+                { en: "ancient", pos: "adj.", zh: "古代的" },
+                { en: "knowledge", pos: "n.", zh: "知识" },
+                { en: "symbolic", pos: "adj.", zh: "象征性的" },
+                { en: "produce", pos: "v.", zh: "生产；产生" },
+                { en: "durable", pos: "adj.", zh: "耐用的" },
+                { en: "renewable", pos: "adj.", zh: "可再生的" },
+                { en: "resources", pos: "n.", zh: "资源（复数）" },
+                { en: "similar", pos: "adj.", zh: "相似的" },
+                { en: "effects", pos: "n.", zh: "效果；影响（复数）" },
+                { en: "manufacturing", pos: "n.", zh: "制造业" },
+                { en: "describe", pos: "v.", zh: "描述" },
+                { en: "shellfish", pos: "n.", zh: "贝类；甲壳类" },
+                { en: "proteins", pos: "n.", zh: "蛋白质（复数）" },
+                { en: "soybean", pos: "n.", zh: "大豆" },
+                { en: "adhesive", pos: "n./adj.", zh: "粘合剂；粘性的" },
+                { en: "formaldehyde", pos: "n.", zh: "甲醛" },
+                { en: "diamonds", pos: "n.", zh: "钻石（复数）" },
+                { en: "industrial", pos: "adj.", zh: "工业的" },
+                { en: "gem", pos: "n.", zh: "宝石" },
+                { en: "profitable", pos: "adj.", zh: "有利可图的" },
+                { en: "although", pos: "conj.", zh: "尽管" },
+                { en: "nonstop", pos: "adj./adv.", zh: "不间断的（地）" },
+                { en: "solo", pos: "n./adj.", zh: "独奏；单独的" },
+                { en: "crossing", pos: "n.", zh: "横渡；交叉口" },
+                { en: "aviator", pos: "n.", zh: "飞行员" },
+                { en: "Atlantic Ocean", pos: "n.", zh: "大西洋" },
+                { en: "qualify", pos: "v.", zh: "使合格；有资格" },
+                { en: "elements", pos: "n.", zh: "元素；要素（复数）" },
+                { en: "established", pos: "v./adj.", zh: "建立（过去式）；已确立的" },
+                { en: "rhythm", pos: "n.", zh: "节奏" },
+                { en: "blues", pos: "n.", zh: "布鲁斯音乐" },
+                { en: "gospel", pos: "n.", zh: "福音音乐；福音" },
+                { en: "widely", pos: "adv.", zh: "广泛地" },
+                { en: "influential", pos: "adj.", zh: "有影响力的" },
+                { en: "naturally", pos: "adv.", zh: "自然地" },
+                { en: "harbor", pos: "n./v.", zh: "港口；庇护" },
+                { en: "capital", pos: "n.", zh: "首都；资本" },
+                { en: "centuries", pos: "n.", zh: "世纪（复数）" },
+                { en: "botanical", pos: "adj.", zh: "植物的" },
+                { en: "occupies", pos: "v.", zh: "占据（第三人称单数）" },
+                { en: "taxation", pos: "n.", zh: "税收" },
+                { en: "debated", pos: "v.", zh: "辩论（过去式）" },
+                { en: "merchant", pos: "n.", zh: "商人" },
+                { en: "seaman", pos: "n.", zh: "海员" },
+                { en: "circulate", pos: "v.", zh: "循环；流通" },
+                { en: "gases", pos: "n.", zh: "气体（复数）" },
+                { en: "ducts", pos: "n.", zh: "管道（复数）" },
+                { en: "inventor", pos: "n.", zh: "发明家" },
+                { en: "institution", pos: "n.", zh: "机构；制度" },
+                { en: "education", pos: "n.", zh: "教育" },
+                { en: "port", pos: "n.", zh: "港口" },
+                { en: "commercial", pos: "adj.", zh: "商业的" },
+                { en: "financial", pos: "adj.", zh: "金融的；财务的" },
+                { en: "industry", pos: "n.", zh: "工业；行业" },
+                { en: "interior", pos: "n./adj.", zh: "内部；内部的" },
+                { en: "peculiarly", pos: "adv.", zh: "特别地；奇怪地" },
+                { en: "extremely", pos: "adv.", zh: "极其" },
+                { en: "exemplified", pos: "v.", zh: "例证（过去式）" },
+                { en: "helium", pos: "n.", zh: "氦" },
+                { en: "temperatures", pos: "n.", zh: "温度（复数）" },
+                { en: "nonverbal", pos: "adj.", zh: "非语言的" },
+                { en: "viola", pos: "n.", zh: "中提琴" },
+                { en: "violin", pos: "n.", zh: "小提琴" },
+                { en: "pitch", pos: "n.", zh: "音高；投掷" },
+                { en: "conservator", pos: "n.", zh: "管理员；保护者" },
+                { en: "restores", pos: "v.", zh: "修复（第三人称单数）" },
+                { en: "artwork", pos: "n.", zh: "艺术品" },
+                { en: "deterioration", pos: "n.", zh: "恶化；退化" },
+                { en: "alteration", pos: "n.", zh: "改变" },
+                { en: "vocalist", pos: "n.", zh: "歌手" },
+                { en: "interpretations", pos: "n.", zh: "解释；演绎（复数）" },
+                { en: "computing", pos: "n.", zh: "计算；计算机技术" },
+                { en: "time-sharing", pos: "n.", zh: "分时（系统）" },
+                { en: "enable", pos: "v.", zh: "使能够" },
+                { en: "galaxies", pos: "n.", zh: "星系（复数）" },
+                { en: "clusters", pos: "n.", zh: "星团；集群（复数）" },
+                { en: "contain", pos: "v.", zh: "包含" },
+                { en: "various", pos: "adj.", zh: "各种各样的" },
+                { en: "dialect", pos: "n.", zh: "方言" },
+                { en: "metaphysical", pos: "adj.", zh: "形而上学的" },
+                { en: "extended", pos: "adj.", zh: "延伸的；扩展的" },
+                { en: "lyric", pos: "n./adj.", zh: "歌词；抒情的" },
+                { en: "range", pos: "n./v.", zh: "范围；延伸" },
+                { en: "faith", pos: "n.", zh: "信仰" },
+                { en: "decay", pos: "n./v.", zh: "腐烂；衰退" },
+                { en: "immortal", pos: "adj.", zh: "不朽的" },
+                { en: "copper", pos: "n.", zh: "铜" },
+                { en: "abundance", pos: "n.", zh: "丰富；充裕" },
+                { en: "Civil rights", pos: "n.", zh: "民权" },
+                { en: "prohibited", pos: "v./adj.", zh: "禁止（过去式）；被禁止的" },
+                { en: "discrimination", pos: "n.", zh: "歧视" },
+                { en: "accommodations", pos: "n.", zh: "住宿；适应（复数）" },
+                { en: "employment", pos: "n.", zh: "就业；雇佣" },
+                { en: "striking", pos: "adj.", zh: "引人注目的" },
+                { en: "aspect", pos: "n.", zh: "方面" },
+                { en: "traditional", pos: "adj.", zh: "传统的" },
+                { en: "Inuit", pos: "n.", zh: "因纽特人" },
+                { en: "homogeneity", pos: "n.", zh: "同质性" },
+                { en: "vast", pos: "adj.", zh: "广阔的；巨大的" },
+                { en: "expanses", pos: "n.", zh: "广阔区域（复数）" },
+                { en: "Arctic", pos: "adj./n.", zh: "北极的；北极" },
+                { en: "melting pot", pos: "n.", zh: "大熔炉" },
+                { en: "cliché", pos: "n.", zh: "陈词滥调" },
+                { en: "modern", pos: "adj.", zh: "现代的" },
+                { en: "coelacanths", pos: "n.", zh: "腔棘鱼（复数）" },
+                { en: "vertebrates", pos: "n.", zh: "脊椎动物（复数）" },
+                { en: "jaguar", pos: "n.", zh: "美洲豹" },
+                { en: "agile", pos: "adj.", zh: "敏捷的" },
+                { en: "climber", pos: "n.", zh: "攀登者" },
+                { en: "branches", pos: "n.", zh: "分支；树枝（复数）" },
+                { en: "daytime", pos: "n.", zh: "白天" },
+                { en: "equality", pos: "n.", zh: "平等" },
+                { en: "occurs", pos: "v.", zh: "发生（第三人称单数）" },
+                { en: "alimentary", pos: "adj.", zh: "营养的；消化器官的" },
+                { en: "canal", pos: "n.", zh: "运河；管道" },
+                { en: "cirrus", pos: "n.", zh: "卷云" },
+                { en: "clouds", pos: "n.", zh: "云（复数）" },
+                { en: "crystals", pos: "n.", zh: "晶体（复数）" },
+                { en: "generally", pos: "adv.", zh: "通常" },
+                { en: "invertebrate", pos: "n./adj.", zh: "无脊椎动物；无脊椎的" },
+                { en: "calciferous", pos: "adj.", zh: "含钙的" },
+                { en: "secretions", pos: "n.", zh: "分泌物（复数）" },
+                { en: "protozoans", pos: "n.", zh: "原生动物（复数）" },
+                { en: "composed", pos: "adj.", zh: "由…组成的" },
+                { en: "cellulose", pos: "n.", zh: "纤维素" },
+                { en: "chitin", pos: "n.", zh: "几丁质" },
+                { en: "siliceous", pos: "adj.", zh: "含硅的" },
+                { en: "genre", pos: "n.", zh: "体裁；类型" },
+                { en: "concerned", pos: "adj.", zh: "关心的；担忧的" },
+                { en: "certain", pos: "adj.", zh: "肯定的；某些" },
+                { en: "social", pos: "adj.", zh: "社会的；社交的" },
+                { en: "standards", pos: "n.", zh: "标准（复数）" },
+                { en: "correspondent", pos: "n.", zh: "记者；通信者" },
+                { en: "journalist", pos: "n.", zh: "新闻记者" },
+                { en: "presidential", pos: "adj.", zh: "总统的" },
+                { en: "calculate", pos: "v.", zh: "计算" },
+                { en: "luminosity", pos: "n.", zh: "光度" },
+                { en: "relative", pos: "adj./n.", zh: "相对的；亲戚" },
+                { en: "mathematics", pos: "n.", zh: "数学" },
+                { en: "linear", pos: "adj.", zh: "线性的" },
+                { en: "equation", pos: "n.", zh: "方程" },
+                { en: "variable", pos: "n./adj.", zh: "变量；可变的" },
+                { en: "degree", pos: "n.", zh: "学位；程度" },
+                { en: "awarded", pos: "v.", zh: "授予（过去式）" },
+                { en: "Ph.D.", pos: "n.", zh: "博士学位" },
+                { en: "wavelength", pos: "n.", zh: "波长" },
+                { en: "X-rays", pos: "n.", zh: "X射线（复数）" },
+                { en: "collide", pos: "v.", zh: "碰撞" },
+                { en: "electrons", pos: "n.", zh: "电子（复数）" },
+                { en: "physicist", pos: "n.", zh: "物理学家" },
+                { en: "ostriches", pos: "n.", zh: "鸵鸟（复数）" },
+                { en: "wary", pos: "adj.", zh: "谨慎的" },
+                { en: "detect", pos: "v.", zh: "察觉；检测" },
+                { en: "disturbances", pos: "n.", zh: "干扰；骚动（复数）" },
+                { en: "distance", pos: "n.", zh: "距离" },
+                { en: "processes", pos: "n./v.", zh: "过程（复数）；加工（第三人称单数）" },
+                { en: "steel", pos: "n.", zh: "钢铁" },
+                { en: "railroad", pos: "n.", zh: "铁路" },
+                { en: "equipment", pos: "n.", zh: "设备" },
+                { en: "replacement", pos: "n.", zh: "替代；更换" },
+                { en: "iron", pos: "n.", zh: "铁" },
+                { en: "shipbuilding", pos: "n.", zh: "造船业" },
+                { en: "agrarian", pos: "adj.", zh: "农业的" },
+                { en: "industrialization", pos: "n.", zh: "工业化" },
+                { en: "developed", pos: "adj./v.", zh: "发达的；发展（过去式）" },
+                { en: "statue", pos: "n.", zh: "雕像" },
+                { en: "archaic", pos: "adj.", zh: "古老的" },
+                { en: "sculpture", pos: "n.", zh: "雕塑" },
+                { en: "approximately", pos: "adv.", zh: "大约" },
+                { en: "depicts", pos: "v.", zh: "描绘（第三人称单数）" },
+                { en: "acquired", pos: "v.", zh: "获得（过去式）" },
+                { en: "authenticity", pos: "n.", zh: "真实性" },
+                { en: "scholarly", pos: "adj.", zh: "学术的；博学的" },
+                { en: "opponents", pos: "n.", zh: "对手（复数）" },
+                { en: "unusual", pos: "adj.", zh: "不寻常的" },
+                { en: "reasonable", pos: "adj.", zh: "合理的" },
+                { en: "rejected", pos: "v.", zh: "拒绝（过去式）" },
+                { en: "sculptor", pos: "n.", zh: "雕塑家" },
+                { en: "additionally", pos: "adv.", zh: "此外" },
+                { en: "peculiar", pos: "adj.", zh: "奇特的；特有的" },
+                { en: "mineral", pos: "n.", zh: "矿物" },
+                { en: "authenticated", pos: "v.", zh: "鉴定（过去式）" },
+                { en: "surviving", pos: "adj./v.", zh: "幸存的；存活（现在分词）" },
+                { en: "production", pos: "n.", zh: "生产；产品" },
+                { en: "historians", pos: "n.", zh: "历史学家（复数）" },
+                { en: "proposed", pos: "v.", zh: "提议（过去式）" },
+                { en: "stylistic", pos: "adj.", zh: "风格的" },
+                { en: "chronology", pos: "n.", zh: "年表；年代学" },
+                { en: "consensus", pos: "n.", zh: "共识" },
+                { en: "inconsistencies", pos: "n.", zh: "不一致（复数）" },
+                { en: "forgery", pos: "n.", zh: "伪造；赝品" },
+                { en: "laboratory", pos: "n.", zh: "实验室" },
+                { en: "distinctive", pos: "adj.", zh: "独特的" },
+                { en: "features", pos: "n.", zh: "特征（复数）" },
+                { en: "treatment", pos: "n.", zh: "治疗；处理" },
+                { en: "indicated", pos: "v.", zh: "表明（过去式）" },
+                { en: "evidence", pos: "n.", zh: "证据" },
+                { en: "resembles", pos: "v.", zh: "类似（第三人称单数）" },
+                { en: "subsequent", pos: "adj.", zh: "随后的" },
+                { en: "qualms", pos: "n.", zh: "疑虑（复数）" },
+                { en: "nonetheless", pos: "adv.", zh: "尽管如此" },
+                { en: "tools", pos: "n.", zh: "工具（复数）" },
+                { en: "fascinating", pos: "adj.", zh: "迷人的" },
+                { en: "geological", pos: "adj.", zh: "地质的" },
+                { en: "arch", pos: "n./adj.", zh: "拱门；主要的" },
+                { en: "magnificent", pos: "adj.", zh: "壮丽的" },
+                { en: "plentiful", pos: "adj.", zh: "丰富的" },
+                { en: "stream", pos: "n.", zh: "溪流；流" },
+                { en: "Western", pos: "adj.", zh: "西方的" },
+                { en: "eroded", pos: "v.", zh: "侵蚀（过去式）" },
+                { en: "erosion", pos: "n.", zh: "侵蚀" },
+                { en: "variance", pos: "n.", zh: "差异；变化" },
+                { en: "sandstone", pos: "n.", zh: "砂岩" },
+                { en: "rainwater", pos: "n.", zh: "雨水" },
+                { en: "partly", pos: "adv.", zh: "部分地" },
+                { en: "caverns", pos: "n.", zh: "大洞穴（复数）" },
+                { en: "cliffs", pos: "n.", zh: "悬崖（复数）" },
+                { en: "ceaseless", pos: "adj.", zh: "不停的" },
+                { en: "sandblasting", pos: "n.", zh: "喷砂" },
+                { en: "pounding", pos: "n./v.", zh: "重击（现在分词）" },
+                { en: "hollowed", pos: "adj./v.", zh: "挖空的（过去式）" },
+                { en: "limestone", pos: "n.", zh: "石灰石" },
+                { en: "formations", pos: "n.", zh: "形成物；地层（复数）" },
+                { en: "groundwater", pos: "n.", zh: "地下水" },
+                { en: "chalk", pos: "n.", zh: "粉笔；白垩" },
+                { en: "lateral", pos: "adj.", zh: "侧面的" },
+                { en: "narrow", pos: "adj.", zh: "狭窄的" },
+                { en: "evolved", pos: "v.", zh: "进化（过去式）" },
+                { en: "eventually", pos: "adv.", zh: "最终" },
+                { en: "combined", pos: "v./adj.", zh: "结合（过去式）；结合的" },
+                { en: "shelter", pos: "n./v.", zh: "庇护所；遮蔽" },
+                { en: "fractures", pos: "n.", zh: "裂缝（复数）" },
+                { en: "penetrate", pos: "v.", zh: "穿透" },
+                { en: "collapsed", pos: "v.", zh: "倒塌（过去式）" },
+                { en: "valley", pos: "n.", zh: "山谷" },
+                { en: "resist", pos: "v.", zh: "抵抗" },
+                { en: "spanning", pos: "v.", zh: "跨越（现在分词）" },
+                { en: "ravine", pos: "n.", zh: "沟壑" },
+                { en: "continuous", pos: "adj.", zh: "连续的" },
+                { en: "manuscript", pos: "n.", zh: "手稿" },
+                { en: "considered", pos: "v./adj.", zh: "认为（过去式）；被视为" },
+                { en: "founding", pos: "n./v.", zh: "成立（现在分词）" },
+                { en: "authoritative", pos: "adj.", zh: "权威的" },
+                { en: "geography", pos: "n.", zh: "地理" },
+                { en: "defined", pos: "v./adj.", zh: "定义（过去式）；明确的" },
+                { en: "definitive", pos: "adj.", zh: "决定性的；权威的" },
+                { en: "intellectual", pos: "adj./n.", zh: "智力的；知识分子" },
+                { en: "obvious", pos: "adj.", zh: "明显的" },
+                { en: "undergo", pos: "v.", zh: "经历" },
+                { en: "transmission", pos: "n.", zh: "传播；传输" },
+                { en: "recovery", pos: "n.", zh: "恢复" },
+                { en: "experimental", pos: "adj.", zh: "实验的" },
+                { en: "engraving", pos: "n.", zh: "雕刻；版画" },
+                { en: "remarkably", pos: "adv.", zh: "显著地" },
+                { en: "confident", pos: "adj.", zh: "自信的" },
+                { en: "anticipated", pos: "v.", zh: "预期（过去式）" },
+                { en: "eager", pos: "adj.", zh: "渴望的" },
+                { en: "atlas", pos: "n.", zh: "地图集" },
+                { en: "contained", pos: "v.", zh: "包含（过去式）" },
+                { en: "innovative", pos: "adj.", zh: "创新的" },
+                { en: "dissemination", pos: "n.", zh: "传播" },
+                { en: "catalyst", pos: "n.", zh: "催化剂" },
+                { en: "compiling", pos: "v.", zh: "编纂（现在分词）" },
+                { en: "redesign", pos: "v./n.", zh: "重新设计" },
+                { en: "discoveries", pos: "n.", zh: "发现（复数）" },
+                { en: "defense", pos: "n.", zh: "防御" },
+                { en: "mechanism", pos: "n.", zh: "机制；机械装置" },
+                { en: "deter", pos: "v.", zh: "阻止" },
+                { en: "potential", pos: "n./adj.", zh: "潜力；潜在的" },
+                { en: "predators", pos: "n.", zh: "捕食者（复数）" },
+                { en: "compounds", pos: "n.", zh: "化合物（复数）" },
+                { en: "advantage", pos: "n.", zh: "优势" },
+                { en: "poisonous", pos: "adj.", zh: "有毒的" },
+                { en: "consequently", pos: "adv.", zh: "因此" },
+                { en: "expelled", pos: "v.", zh: "排出（过去式）" },
+                { en: "lethal", pos: "adj.", zh: "致命的" },
+                { en: "unpleasant", pos: "adj.", zh: "不愉快的" },
+                { en: "absorbed", pos: "v.", zh: "吸收（过去式）" },
+                { en: "upset", pos: "adj./v.", zh: "沮丧的；打乱" },
+                { en: "exclusive", pos: "adj.", zh: "独有的；排外的" },
+                { en: "larvae", pos: "n.", zh: "幼虫（复数）" },
+                { en: "insects", pos: "n.", zh: "昆虫（复数）" },
+                { en: "avoid", pos: "v.", zh: "避免" },
+                { en: "accumulated", pos: "v.", zh: "积累（过去式）" },
+                { en: "toxic", pos: "adj.", zh: "有毒的" },
+                { en: "obtained", pos: "v.", zh: "获得（过去式）" },
+                { en: "widespread", pos: "adj.", zh: "广泛的" },
+                { en: "restricted", pos: "adj./v.", zh: "受限制的；限制（过去式）" },
+                { en: "ingest", pos: "v.", zh: "摄入" },
+                { en: "digest", pos: "v./n.", zh: "消化；文摘" },
+                { en: "incorporated", pos: "v.", zh: "合并；纳入（过去式）" },
+                { en: "ejected", pos: "v.", zh: "喷射；弹出（过去式）" },
+                { en: "venoms", pos: "n.", zh: "毒液（复数）" },
+                { en: "tissues", pos: "n.", zh: "组织（复数）" },
+                { en: "prominence", pos: "n.", zh: "突出；重要性" },
+                { en: "emerged", pos: "v.", zh: "出现（过去式）" },
+                { en: "presence", pos: "n.", zh: "存在；出席" },
+                { en: "monumental", pos: "adj.", zh: "纪念性的；巨大的" },
+                { en: "dwelling", pos: "n.", zh: "住所" },
+                { en: "sprawling", pos: "adj./v.", zh: "蔓延的；延伸（现在分词）" },
+                { en: "urban", pos: "adj.", zh: "城市的" },
+                { en: "complex", pos: "adj./n.", zh: "复杂的；综合体" },
+                { en: "plateau", pos: "n.", zh: "高原" },
+                { en: "lofty", pos: "adj.", zh: "高耸的；崇高的" },
+                { en: "heartland", pos: "n.", zh: "中心地带" },
+                { en: "nomadic", pos: "adj.", zh: "游牧的" },
+                { en: "foraging", pos: "n./v.", zh: "觅食（现在分词）" },
+                { en: "acquire", pos: "v.", zh: "获得" },
+                { en: "amenities", pos: "n.", zh: "便利设施（复数）" },
+                { en: "permanent", pos: "adj.", zh: "永久的" },
+                { en: "hearth", pos: "n.", zh: "炉边；壁炉" },
+                { en: "harsh", pos: "adj.", zh: "严酷的" },
+                { en: "rugged", pos: "adj.", zh: "崎岖的；结实的" },
+                { en: "adequate", pos: "adj.", zh: "足够的" },
+                { en: "gradually", pos: "adv.", zh: "逐渐地" },
+                { en: "mortar", pos: "n.", zh: "砂浆；迫击炮" },
+                { en: "sturdy", pos: "adj.", zh: "坚固的" },
+                { en: "latticework", pos: "n.", zh: "格子结构" },
+                { en: "granaries", pos: "n.", zh: "粮仓（复数）" },
+                { en: "ascent", pos: "n.", zh: "上升；攀登" },
+                { en: "achieved", pos: "v.", zh: "实现（过去式）" },
+                { en: "astonishing", pos: "adj.", zh: "惊人的" },
+                { en: "architectural", pos: "adj.", zh: "建筑的" },
+                { en: "tucked", pos: "v./adj.", zh: "塞进（过去式）；卷起的" },
+                { en: "crescent", pos: "n.", zh: "新月形" },
+                { en: "structure", pos: "n.", zh: "结构" },
+                { en: "erected", pos: "v.", zh: "竖立（过去式）" },
+                { en: "situated", pos: "adj.", zh: "位于" },
+                { en: "arduous", pos: "adj.", zh: "艰巨的" },
+                { en: "lacked", pos: "v.", zh: "缺乏（过去式）" },
+                { en: "ladder", pos: "n.", zh: "梯子" },
+                { en: "substantial", pos: "adj.", zh: "大量的；坚固的" },
+                { en: "persistent", pos: "adj.", zh: "持久的；坚持不懈的" },
+                { en: "diminish", pos: "v.", zh: "减少；减弱" },
+                { en: "facilitate", pos: "v.", zh: "促进" },
+                { en: "circumstance", pos: "n.", zh: "情况；环境" },
+                { en: "predominant", pos: "adj.", zh: "主要的；占优势的" },
+                { en: "prevail", pos: "v.", zh: "盛行；占上风" },
+                { en: "simultaneous", pos: "adj.", zh: "同时发生的" }
+            ];
 
-            function parseWordList(text) {
-                const lines = text.split(/\r?\n/);
-                const words = [];
-                const regex = /^\d+\.\s+([\w\s&’'-]+?)\s+(?:[a-z]+\.(?:&[a-z]+\.)?|n\.\/v\.|phr\.|adj\.|adv\.|prep\.|conj\.|num\.|pron\.|v\.|n\.)\s+(.+)$/i;
-                for (let line of lines) {
-                    line = line.trim();
-                    if (!line) continue;
-                    const match = line.match(regex);
-                    if (match) {
-                        words.push({ en: match[1].trim(), zh: match[2].trim() });
-                    } else {
-                        const parts = line.split(/\.\s+/);
-                        if (parts.length >= 2) {
-                            let rest = parts.slice(1).join('.');
-                            let en = rest.split(/\s+(?:n\.|v\.|adj\.|adv\.|prep\.|phr\.|conj\.|num\.)/)[0];
-                            let zh = rest.replace(/^[a-z&./]+?\s+/, '');
-                            if (en && zh) words.push({ en: en.trim(), zh: zh.trim() });
-                        }
-                    }
-                }
-                return words;
+            // 验证数量
+            console.log('总单词数:', ALL_WORDS.length);
+
+            // 按范围分组 (每40个一组, 1-based)
+            function getWordsByRange(rangeNum) {
+                const start = (rangeNum - 1) * 40;
+                const end = Math.min(start + 40, ALL_WORDS.length);
+                return ALL_WORDS.slice(start, end);
             }
 
-            const BANK4 = parseWordList(rawWordsText);
-
-            // 获取题库4所有单词 (直接返回)
-            function getWordsByRange(range) {
-                // 目前只有题库4
-                return [...BANK4];
+            // 获取范围标签
+            function getRangeLabel(rangeNum) {
+                const start = (rangeNum - 1) * 40 + 1;
+                const end = Math.min(start + 39, 480);
+                return `题库${rangeNum} (${start}-${end})`;
             }
 
+            // 全局状态
             let currentSequence = [],
                 currentIndex = 0,
                 correctCount = 0,
                 answered = false,
                 currentOptions = [],
                 currentTheme = "default",
-                currentRangeLabel = "题库4 (301-400)",
+                currentRange = 1,
+                currentRangeLabel = "题库1 (1-40)",
                 autoSpeakEnabled = false,
                 quizMode = "choice";
             let availableVoices = [],
@@ -955,6 +1422,7 @@
                 nextBtn = $('nextBtn'),
                 prevBtn = $('prevBtn'),
                 currentWordEl = $('currentWord'),
+                currentPosEl = $('currentPos'),
                 wordClickArea = $('wordClickArea'),
                 optionsContainer = $('optionsContainer'),
                 inputModeContainer = $('inputModeContainer'),
@@ -982,6 +1450,7 @@
                 matchFeedbackMsg = $('matchFeedbackMsg'),
                 matchNextBtn = $('matchNextBtn');
 
+            // 语音相关
             function speakWord(text) {
                 if (!text || !window.speechSynthesis) return;
                 window.speechSynthesis.cancel();
@@ -1048,21 +1517,26 @@
                 setTimeout(() => { if (quizMode !== 'match') feedbackMsgDiv.innerHTML = '🤔 选择一个释义～'; }, 1500);
             });
 
-            function getRandomDistractors(correctZh) {
+            // 工具函数
+            function getRandomDistractors(correctZh, rangeNum) {
                 const used = new Set([correctZh]);
                 const pool = [];
-                for (const w of BANK4) {
-                    if (!used.has(w.zh)) { used.add(w.zh); pool.push(w.zh); }
+                const rangeWords = getWordsByRange(rangeNum);
+                for (const w of rangeWords) {
+                    if (!used.has(w.zh)) { used.add(w.zh);
+                        pool.push(w.zh); }
                     if (pool.length >= 50) break;
                 }
-                for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+                for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));
+                    [pool[i], pool[j]] = [pool[j], pool[i]]; }
                 return pool.slice(0, 3);
             }
 
-            function generateOptions(correctZh) {
-                const distractors = getRandomDistractors(correctZh);
+            function generateOptions(correctZh, rangeNum) {
+                const distractors = getRandomDistractors(correctZh, rangeNum);
                 const options = [{ text: correctZh, isCorrect: true }, ...distractors.map(t => ({ text: t, isCorrect: false }))];
-                for (let i = options.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [options[i], options[j]] = [options[j], options[i]]; }
+                for (let i = options.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));
+                    [options[i], options[j]] = [options[j], options[i]]; }
                 return options;
             }
 
@@ -1075,14 +1549,17 @@
                 const map = new Map();
                 currentSessionMistakes.forEach(w => map.set(w, (map.get(w) || 0) + 1));
                 let html = '<div class="mistake-summary"><h3>📋 本次错词总结</h3>';
+                const rangeWords = getWordsByRange(currentRange);
                 for (const [word, cnt] of map) {
-                    const ref = BANK4.find(w => w.en === word);
+                    const ref = rangeWords.find(w => w.en === word);
                     const zh = ref ? ref.zh : '';
-                    html += `<div class="mistake-item"><span><strong>${word}</strong> (${cnt}次)</span><span>${zh}</span></div>`;
+                    const pos = ref ? ref.pos : '';
+                    html += `<div class="mistake-item"><span><strong>${word}</strong> (${pos}) ${cnt}次</span><span>${zh}</span></div>`;
                 }
                 return html + '</div>';
             }
 
+            // 配对模式
             function startMatchRound() {
                 if (!matchWords.length) {
                     matchRoundInfo.textContent = '🎉 所有单词已配对完毕！';
@@ -1096,10 +1573,16 @@
                 matchTotalCount = count;
                 matchPairedCount = 0;
                 matchSelectedId = null;
-                const leftItems = round.map(w => ({ id: w.en, text: w.en, type: 'en' })).sort(() => Math.random() - 0.5);
-                const rightItems = round.map(w => ({ id: w.en, text: w.zh, type: 'zh' })).sort(() => Math.random() - 0.5);
-                matchLeftColumn.innerHTML = leftItems.map(i => `<div class="match-card" data-id="${i.id}" data-type="en">${i.text}</div>`).join('');
-                matchRightColumn.innerHTML = rightItems.map(i => `<div class="match-card" data-id="${i.id}" data-type="zh">${i.text}</div>`).join('');
+                const leftItems = round.map(w => ({ id: w.en, text: w.en + ' (' + w.pos + ')', type: 'en', pos: w.pos }));
+                const rightItems = round.map(w => ({ id: w.en, text: w.zh, type: 'zh' }));
+                leftItems.sort(() => Math.random() - 0.5);
+                rightItems.sort(() => Math.random() - 0.5);
+                matchLeftColumn.innerHTML = leftItems.map(i =>
+                    `<div class="match-card" data-id="${i.id}" data-type="en">${i.text}</div>`
+                ).join('');
+                matchRightColumn.innerHTML = rightItems.map(i =>
+                    `<div class="match-card" data-id="${i.id}" data-type="zh">${i.text}</div>`
+                ).join('');
                 document.querySelectorAll('.match-card').forEach(card => {
                     card.onclick = () => handleMatchCardClick(card);
                 });
@@ -1123,7 +1606,8 @@
                         return;
                     }
                     if (id === matchSelectedId) {
-                        document.querySelectorAll(`.match-card[data-id="${id}"]`).forEach(c => { c.classList.add('paired'); c.classList.remove('selected'); });
+                        document.querySelectorAll(`.match-card[data-id="${id}"]`).forEach(c => { c.classList.add('paired');
+                            c.classList.remove('selected'); });
                         matchPairedCount++;
                         correctCount++;
                         scoreTextSpan.textContent = `✅ 答对: ${correctCount}`;
@@ -1144,9 +1628,11 @@
                 }
             }
 
+            // 渲染游戏
             function renderGame() {
                 if (currentIndex >= currentSequence.length) {
                     currentWordEl.textContent = "🎉 通关 🎉";
+                    currentPosEl.textContent = '';
                     const summary = getMistakeSummary();
                     let html = `<div class="finish-message">✨ 恭喜你完成了 ${currentRangeLabel} 题库！ ✨<br>点击「首页」可以选择其他范围继续挑战</div>`;
                     if (summary) html += summary;
@@ -1162,6 +1648,7 @@
                 }
                 const word = currentSequence[currentIndex];
                 currentWordEl.textContent = word.en;
+                currentPosEl.textContent = `(${word.pos})`;
                 const history = answerHistory[currentIndex];
                 if (quizMode === 'choice') {
                     optionsContainer.classList.remove('hide');
@@ -1170,7 +1657,10 @@
                         currentOptions = history.options;
                         answered = history.answered;
                         if (history.correctCount !== undefined) correctCount = history.correctCount;
-                    } else { currentOptions = generateOptions(word.zh); answered = false }
+                    } else {
+                        currentOptions = generateOptions(word.zh, currentRange);
+                        answered = false;
+                    }
                     optionsContainer.innerHTML = '';
                     currentOptions.forEach((opt, idx) => {
                         const btn = document.createElement('button');
@@ -1178,15 +1668,38 @@
                         btn.textContent = opt.text;
                         btn.dataset.correct = opt.isCorrect;
                         btn.dataset.index = idx;
-                        if (history && history.answered) { btn.disabled = true; if (opt.isCorrect) btn.classList.add('correct-highlight'); if (history.selectedOptionIndex === idx && !opt.isCorrect) btn.classList.add('wrong-highlight') } else { btn.addEventListener('click', () => handleAnswerChoice(btn, opt.isCorrect, idx)) }
+                        if (history && history.answered) {
+                            btn.disabled = true;
+                            if (opt.isCorrect) btn.classList.add('correct-highlight');
+                            if (history.selectedOptionIndex === idx && !opt.isCorrect) btn.classList.add(
+                            'wrong-highlight');
+                        } else {
+                            btn.addEventListener('click', () => handleAnswerChoice(btn, opt.isCorrect, idx));
+                        }
                         optionsContainer.appendChild(btn);
                     });
-                    feedbackMsgDiv.innerHTML = (history && history.answered) ? (history.feedbackMsg || '🤔 选择一个释义～') : '🤔 选择一个释义～';
+                    feedbackMsgDiv.innerHTML = (history && history.answered) ? (history.feedbackMsg || '🤔 选择一个释义～') :
+                        '🤔 选择一个释义～';
                     nextBtn.disabled = !(history && history.answered);
                 } else {
                     optionsContainer.classList.add('hide');
                     inputModeContainer.classList.remove('hide');
-                    if (history && history.inputState) { answered = true; if (history.correctCount !== undefined) correctCount = history.correctCount; inputAnswerField.value = history.userInput || ''; inputAnswerField.disabled = true; submitInputBtn.disabled = true; feedbackMsgDiv.innerHTML = history.feedbackMsg || ''; nextBtn.disabled = false } else { answered = false; inputAnswerField.value = ''; inputAnswerField.disabled = false; submitInputBtn.disabled = false; feedbackMsgDiv.innerHTML = '💡 请输入中文释义后点击确认'; nextBtn.disabled = true }
+                    if (history && history.inputState) {
+                        answered = true;
+                        if (history.correctCount !== undefined) correctCount = history.correctCount;
+                        inputAnswerField.value = history.userInput || '';
+                        inputAnswerField.disabled = true;
+                        submitInputBtn.disabled = true;
+                        feedbackMsgDiv.innerHTML = history.feedbackMsg || '';
+                        nextBtn.disabled = false;
+                    } else {
+                        answered = false;
+                        inputAnswerField.value = '';
+                        inputAnswerField.disabled = false;
+                        submitInputBtn.disabled = false;
+                        feedbackMsgDiv.innerHTML = '💡 请输入中文释义后点击确认';
+                        nextBtn.disabled = true;
+                    }
                 }
                 progressTextSpan.textContent = `${currentRangeLabel} · 第 ${currentIndex+1} / ${currentSequence.length} 词`;
                 scoreTextSpan.textContent = `✅ 答对: ${correctCount}`;
@@ -1195,13 +1708,26 @@
             }
 
             function handleAnswerChoice(btn, isCorrect, optIndex) {
-                if (answered) { feedbackMsgDiv.innerHTML = '⚠️ 已经作答，进入下一题吧'; return }
+                if (answered) { feedbackMsgDiv.innerHTML = '⚠️ 已经作答，进入下一题吧'; return; }
                 answered = true;
                 const word = currentSequence[currentIndex];
-                document.querySelectorAll('.option-btn').forEach(b => { b.disabled = true; if (b.dataset.correct === 'true') b.classList.add('correct-highlight'); if (parseInt(b.dataset.index) === optIndex && !isCorrect) b.classList.add('wrong-highlight') });
-                if (isCorrect) { correctCount++; scoreTextSpan.textContent = `✅ 答对: ${correctCount}`; feedbackMsgDiv.innerHTML = `🎉 正确！ "${word.zh}" 很棒！` } else { mistakeMap.set(word.en, (mistakeMap.get(word.en) || 0) + 1); addCurrentMistake(word.en); feedbackMsgDiv.innerHTML = `❌ 错误！ 正确答案是 "${word.zh}"。继续加油～` }
+                document.querySelectorAll('.option-btn').forEach(b => {
+                    b.disabled = true;
+                    if (b.dataset.correct === 'true') b.classList.add('correct-highlight');
+                    if (parseInt(b.dataset.index) === optIndex && !isCorrect) b.classList.add('wrong-highlight');
+                });
+                if (isCorrect) {
+                    correctCount++;
+                    scoreTextSpan.textContent = `✅ 答对: ${correctCount}`;
+                    feedbackMsgDiv.innerHTML = `🎉 正确！ "${word.zh}" 很棒！`;
+                } else {
+                    mistakeMap.set(word.en, (mistakeMap.get(word.en) || 0) + 1);
+                    addCurrentMistake(word.en);
+                    feedbackMsgDiv.innerHTML = `❌ 错误！ 正确答案是 "${word.zh}"。继续加油～`;
+                }
                 nextBtn.disabled = false;
-                answerHistory[currentIndex] = { answered: true, correctCount, options: currentOptions, selectedOptionIndex: optIndex, feedbackMsg: feedbackMsgDiv.innerHTML, word };
+                answerHistory[currentIndex] = { answered: true, correctCount, options: currentOptions, selectedOptionIndex: optIndex,
+                    feedbackMsg: feedbackMsgDiv.innerHTML, word };
             }
 
             function handleInputSubmit() {
@@ -1212,23 +1738,45 @@
                 answered = true;
                 inputAnswerField.disabled = true;
                 submitInputBtn.disabled = true;
-                if (ok) { correctCount++; scoreTextSpan.textContent = `✅ 答对: ${correctCount}`; feedbackMsgDiv.innerHTML = `🎉 正确！ "${word.zh}" 很棒！` } else { mistakeMap.set(word.en, (mistakeMap.get(word.en) || 0) + 1); addCurrentMistake(word.en); feedbackMsgDiv.innerHTML = `❌ 错误！ 正确答案是 "${word.zh}"。你的输入："${val}"` }
+                if (ok) {
+                    correctCount++;
+                    scoreTextSpan.textContent = `✅ 答对: ${correctCount}`;
+                    feedbackMsgDiv.innerHTML = `🎉 正确！ "${word.zh}" 很棒！`;
+                } else {
+                    mistakeMap.set(word.en, (mistakeMap.get(word.en) || 0) + 1);
+                    addCurrentMistake(word.en);
+                    feedbackMsgDiv.innerHTML = `❌ 错误！ 正确答案是 "${word.zh}"。你的输入："${val}"`;
+                }
                 nextBtn.disabled = false;
-                answerHistory[currentIndex] = { answered: true, correctCount, inputState: true, userInput: val, feedbackMsg: feedbackMsgDiv.innerHTML, word };
+                answerHistory[currentIndex] = { answered: true, correctCount, inputState: true, userInput: val,
+                    feedbackMsg: feedbackMsgDiv.innerHTML, word };
             }
 
-            function nextWord() { if (!answered) { feedbackMsgDiv.innerHTML = '📢 请先回答当前单词'; return } currentIndex++; renderGame() }
-            function prevWord() { if (currentIndex > 0) { currentIndex--; renderGame() } }
+            function nextWord() { if (!answered) { feedbackMsgDiv.innerHTML = '📢 请先回答当前单词'; return; } currentIndex++;
+                renderGame(); }
 
-            function applyTheme(t) { document.body.classList.remove('theme-default', 'theme-dark', 'theme-warm', 'theme-whitepink', 'theme-whitegreen', 'theme-charcoal'); document.body.classList.add(`theme-${t}`); currentTheme = t; document.querySelectorAll('#themeSelectorStart .theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === t)) }
+            function prevWord() { if (currentIndex > 0) { currentIndex--;
+                    renderGame(); } }
 
+            // 主题
+            function applyTheme(t) {
+                document.body.classList.remove('theme-default', 'theme-dark', 'theme-warm', 'theme-whitepink', 'theme-whitegreen',
+                    'theme-charcoal');
+                document.body.classList.add(`theme-${t}`);
+                currentTheme = t;
+                document.querySelectorAll('#themeSelectorStart .theme-btn').forEach(b => b.classList.toggle('active', b.dataset
+                    .theme === t));
+            }
+
+            // 开始游戏
             function startGame() {
-                const range = '4'; // 固定为题库4
+                const rangeEl = document.querySelector('#quizRangeSelector .quiz-btn.active');
+                currentRange = parseInt(rangeEl ? rangeEl.dataset.range : '1');
                 const order = document.querySelector('input[name="order"]:checked')?.value || 'original';
                 quizMode = document.querySelector('#quizModeSelector .quiz-btn.active')?.dataset.mode || 'choice';
-                let words = getWordsByRange(range);
-                if (!words.length) words = getWordsByRange('4');
-                currentRangeLabel = '题库4 (301-400)';
+                let words = getWordsByRange(currentRange);
+                if (!words.length) words = getWordsByRange(1);
+                currentRangeLabel = getRangeLabel(currentRange);
                 if (order === 'random') words.sort(() => Math.random() - 0.5);
                 currentSequence = words;
                 currentIndex = 0;
@@ -1237,6 +1785,7 @@
                 answerHistory = {};
                 currentSessionMistakes = [];
                 autoSpeakEnabled = autoSpeakCheckbox?.checked || false;
+
                 if (quizMode === 'match') {
                     standardGameArea.classList.add('hide');
                     matchGameArea.classList.remove('hide');
@@ -1253,18 +1802,76 @@
                 gameScreen.classList.remove('hide');
             }
 
-            function backToHome() { gameScreen.classList.add('hide'); startScreen.classList.remove('hide'); window.speechSynthesis?.cancel() }
+            function backToHome() { gameScreen.classList.add('hide');
+                startScreen.classList.remove('hide');
+                window.speechSynthesis?.cancel(); }
 
-            function renderNotebook() { if (!notebookList) return; notebookList.innerHTML = ''; const words = getWordsByRange('4'); words.forEach((w, i) => { const div = document.createElement('div'); div.className = 'notebook-item'; div.innerHTML = `<div class="notebook-left"><span class="notebook-num">${i+1}</span><span class="notebook-en">${w.en}</span></div><span class="notebook-zh">${w.zh}</span>`; div.addEventListener('click', () => speakWord(w.en)); notebookList.appendChild(div) }) }
+            // 单词本
+            function renderNotebook() {
+                if (!notebookList) return;
+                notebookList.innerHTML = '';
+                const rangeEl = document.querySelector('#notebookRangeSelector .quiz-btn.active');
+                const range = parseInt(rangeEl ? rangeEl.dataset.range : '1');
+                const words = getWordsByRange(range);
+                const label = getRangeLabel(range);
+                const header = document.createElement('div');
+                header.style.cssText = 'padding:8px 24px;font-weight:600;color:var(--gold);border-bottom:2px solid var(--border);';
+                header.textContent = `📖 ${label}  (共${words.length}词)`;
+                notebookList.appendChild(header);
+                words.forEach((w, i) => {
+                    const div = document.createElement('div');
+                    div.className = 'notebook-item';
+                    div.innerHTML =
+                        `<div class="notebook-left"><span class="notebook-num">${i+1}</span><span class="notebook-en">${w.en}</span><span class="notebook-pos">(${w.pos})</span></div><span class="notebook-zh">${w.zh}</span>`;
+                    div.addEventListener('click', () => speakWord(w.en));
+                    notebookList.appendChild(div);
+                });
+            }
 
-            function renderWrongbook() { if (!wrongbookList) return; wrongbookList.innerHTML = ''; const sorted = [...mistakeMap.entries()].sort((a, b) => b[1] - a[1]); if (!sorted.length) { wrongbookList.innerHTML = '<div style="padding:24px;text-align:center;color:var(--footer);">暂无错题记录，继续加油！</div>'; return } sorted.forEach(([word, cnt]) => { const ref = BANK4.find(w => w.en === word); const zh = ref ? ref.zh : ''; const div = document.createElement('div'); div.className = 'notebook-item'; div.innerHTML = `<div class="notebook-left"><span class="notebook-num" style="color:#c44f4f;font-weight:bold;">${cnt}次</span><span class="notebook-en">${word}</span></div><span class="notebook-zh">${zh}</span>`; div.addEventListener('click', () => speakWord(word)); wrongbookList.appendChild(div) }) }
+            // 错题本
+            function renderWrongbook() {
+                if (!wrongbookList) return;
+                wrongbookList.innerHTML = '';
+                const sorted = [...mistakeMap.entries()].sort((a, b) => b[1] - a[1]);
+                if (!sorted.length) {
+                    wrongbookList.innerHTML = '<div style="padding:24px;text-align:center;color:var(--footer);">📭 暂无错题记录，继续加油！</div>';
+                    return;
+                }
+                const header = document.createElement('div');
+                header.style.cssText = 'padding:8px 24px;font-weight:600;color:#c44f4f;border-bottom:2px solid var(--border);';
+                header.textContent = `📕 错题本 (共${sorted.length}个不同单词，按错误次数排序)`;
+                wrongbookList.appendChild(header);
+                sorted.forEach(([word, cnt]) => {
+                    const allWords = getWordsByRange(currentRange);
+                    const ref = allWords.find(w => w.en === word);
+                    const zh = ref ? ref.zh : '';
+                    const pos = ref ? ref.pos : '';
+                    const div = document.createElement('div');
+                    div.className = 'notebook-item';
+                    div.innerHTML =
+                        `<div class="notebook-left"><span class="notebook-num" style="color:#c44f4f;font-weight:bold;">${cnt}次</span><span class="notebook-en">${word}</span><span class="notebook-pos">(${pos})</span></div><span class="notebook-zh">${zh}</span>`;
+                    div.addEventListener('click', () => speakWord(word));
+                    wrongbookList.appendChild(div);
+                });
+            }
 
-            function openNotebook() { startScreen.classList.add('hide'); gameScreen.classList.add('hide'); notebookScreen.classList.remove('hide'); renderNotebook() }
-            function closeNotebook() { notebookScreen.classList.add('hide'); startScreen.classList.remove('hide') }
-            function openWrongbook() { startScreen.classList.add('hide'); gameScreen.classList.add('hide'); wrongbookScreen.classList.remove('hide'); renderWrongbook() }
-            function closeWrongbook() { wrongbookScreen.classList.add('hide'); startScreen.classList.remove('hide') }
+            function openNotebook() { startScreen.classList.add('hide');
+                gameScreen.classList.add('hide');
+                notebookScreen.classList.remove('hide');
+                renderNotebook(); }
 
-            // 事件绑定
+            function closeNotebook() { notebookScreen.classList.add('hide');
+                startScreen.classList.remove('hide'); }
+
+            function openWrongbook() { startScreen.classList.add('hide');
+                gameScreen.classList.add('hide');
+                wrongbookScreen.classList.remove('hide');
+                renderWrongbook(); }
+
+            function closeWrongbook() { wrongbookScreen.classList.add('hide');
+                startScreen.classList.remove('hide'); }
+
+            // ----- 事件绑定 -----
             document.querySelectorAll('#quizRangeSelector .quiz-btn').forEach(b => b.addEventListener('click', function() {
                 document.querySelectorAll('#quizRangeSelector .quiz-btn').forEach(x => x.classList.remove('active'));
                 this.classList.add('active');
@@ -1277,22 +1884,32 @@
                 document.querySelectorAll('#notebookRangeSelector .quiz-btn').forEach(x => x.classList.remove('active'));
                 this.classList.add('active');
             }));
+
             startBtn.addEventListener('click', startGame);
             backHomeBtn.addEventListener('click', backToHome);
             nextBtn.addEventListener('click', nextWord);
             prevBtn.addEventListener('click', prevWord);
-            wordClickArea.addEventListener('click', () => { if (currentIndex < currentSequence.length) speakWord(currentSequence[currentIndex].en) });
+            wordClickArea.addEventListener('click', () => {
+                if (currentIndex < currentSequence.length) speakWord(currentSequence[currentIndex].en);
+            });
             submitInputBtn.addEventListener('click', handleInputSubmit);
-            inputAnswerField.addEventListener('keypress', e => { if (e.key === 'Enter') handleInputSubmit() });
+            inputAnswerField.addEventListener('keypress', e => { if (e.key === 'Enter') handleInputSubmit(); });
             matchNextBtn.addEventListener('click', startMatchRound);
             openNotebookBtn.addEventListener('click', openNotebook);
             closeNotebookBtn.addEventListener('click', closeNotebook);
             openWrongBookBtn.addEventListener('click', openWrongbook);
             closeWrongBookBtn.addEventListener('click', closeWrongbook);
-            document.querySelectorAll('#themeSelectorStart .theme-btn').forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.theme)));
-            document.querySelectorAll('#inlineThemeSwitcher .tiny-theme').forEach(d => d.addEventListener('click', () => applyTheme(d.dataset.theme)));
+
+            document.querySelectorAll('#themeSelectorStart .theme-btn').forEach(b => b.addEventListener('click', () => applyTheme(b
+                .dataset.theme)));
+            document.querySelectorAll('#inlineThemeSwitcher .tiny-theme').forEach(d => d.addEventListener('click', () =>
+                applyTheme(d.dataset.theme)));
+
             applyTheme('default');
             loadVoices();
+
+            document.querySelector('#quizRangeSelector .quiz-btn[data-range="1"]')?.classList.add('active');
+            document.querySelector('#notebookRangeSelector .quiz-btn[data-range="1"]')?.classList.add('active');
         })();
     </script>
 </body>
