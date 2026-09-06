@@ -248,8 +248,8 @@
             font-size: 2.8rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--word-start), var(--word-end));
-            background-clip: text;
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
         }
         .sub {
@@ -379,8 +379,8 @@
             font-size: 3.2rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--word-start), var(--word-end));
-            background-clip: text;
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
         }
         .word-pos {
@@ -700,12 +700,6 @@
             border-color: var(--wrong-border);
             background: var(--wrong);
         }
-        .match-pos {
-            font-size: 0.7rem;
-            color: var(--footer);
-            display: block;
-            margin-top: 2px;
-        }
         @keyframes shake {
             0%,
             100% {
@@ -892,10 +886,11 @@
     <script>
         (function() {
             // ============================================================
-            // 480个单词完整数据 (1-480)
-            // 格式: { en: "单词", pos: "词性", zh: "中文" }
+            // 480个单词完整数据 (1-480) 
+            // 完全忠实于原始文件，包括所有重复单词
             // ============================================================
             const ALL_WORDS = [
+                // ===== 题库1: 1-40 =====
                 { en: "graduation", pos: "n.", zh: "毕业" },
                 { en: "realize", pos: "v.", zh: "意识到" },
                 { en: "supposed", pos: "adj.", zh: "应当；假定的" },
@@ -936,6 +931,7 @@
                 { en: "rent", pos: "n./v.", zh: "租金；租用" },
                 { en: "accident", pos: "n.", zh: "事故" },
                 { en: "reschedule", pos: "v.", zh: "重新安排" },
+                // ===== 题库2: 41-80 =====
                 { en: "psychology", pos: "n.", zh: "心理学" },
                 { en: "prevented", pos: "v.", zh: "防止（过去式）" },
                 { en: "pipe", pos: "n.", zh: "管道" },
@@ -976,9 +972,11 @@
                 { en: "influence", pos: "n./v.", zh: "影响" },
                 { en: "mistaken", pos: "adj.", zh: "错误的" },
                 { en: "fourteenth-century", pos: "adj.", zh: "十四世纪的" },
+                // ===== 题库3: 81-120 =====
                 { en: "travelogues", pos: "n.", zh: "旅行游记（复数）" },
                 { en: "availability", pos: "n.", zh: "可用性" },
                 { en: "scribes", pos: "n.", zh: "抄写员（复数）" },
+                { en: "influence", pos: "n./v.", zh: "影响" },
                 { en: "European", pos: "adj./n.", zh: "欧洲的；欧洲人" },
                 { en: "accuracy", pos: "n.", zh: "准确性" },
                 { en: "precise", pos: "adj.", zh: "精确的" },
@@ -1015,6 +1013,7 @@
                 { en: "admirable", pos: "adj.", zh: "值得赞赏的" },
                 { en: "courage", pos: "n.", zh: "勇气" },
                 { en: "judged", pos: "v.", zh: "判断（过去式）" },
+                // ===== 题库4: 121-160 =====
                 { en: "political", pos: "adj.", zh: "政治的" },
                 { en: "novels", pos: "n.", zh: "小说（复数）" },
                 { en: "pseudonym", pos: "n.", zh: "笔名" },
@@ -1055,6 +1054,7 @@
                 { en: "industrial", pos: "adj.", zh: "工业的" },
                 { en: "gem", pos: "n.", zh: "宝石" },
                 { en: "profitable", pos: "adj.", zh: "有利可图的" },
+                // ===== 题库5: 161-200 =====
                 { en: "although", pos: "conj.", zh: "尽管" },
                 { en: "nonstop", pos: "adj./adv.", zh: "不间断的（地）" },
                 { en: "solo", pos: "n./adj.", zh: "独奏；单独的" },
@@ -1095,6 +1095,7 @@
                 { en: "exemplified", pos: "v.", zh: "例证（过去式）" },
                 { en: "helium", pos: "n.", zh: "氦" },
                 { en: "temperatures", pos: "n.", zh: "温度（复数）" },
+                // ===== 题库6: 201-240 =====
                 { en: "nonverbal", pos: "adj.", zh: "非语言的" },
                 { en: "viola", pos: "n.", zh: "中提琴" },
                 { en: "violin", pos: "n.", zh: "小提琴" },
@@ -1135,6 +1136,7 @@
                 { en: "homogeneity", pos: "n.", zh: "同质性" },
                 { en: "vast", pos: "adj.", zh: "广阔的；巨大的" },
                 { en: "expanses", pos: "n.", zh: "广阔区域（复数）" },
+                // ===== 题库7: 241-280 =====
                 { en: "Arctic", pos: "adj./n.", zh: "北极的；北极" },
                 { en: "melting pot", pos: "n.", zh: "大熔炉" },
                 { en: "cliché", pos: "n.", zh: "陈词滥调" },
@@ -1175,6 +1177,7 @@
                 { en: "relative", pos: "adj./n.", zh: "相对的；亲戚" },
                 { en: "mathematics", pos: "n.", zh: "数学" },
                 { en: "linear", pos: "adj.", zh: "线性的" },
+                // ===== 题库8: 281-320 =====
                 { en: "equation", pos: "n.", zh: "方程" },
                 { en: "variable", pos: "n./adj.", zh: "变量；可变的" },
                 { en: "degree", pos: "n.", zh: "学位；程度" },
@@ -1215,6 +1218,7 @@
                 { en: "sculptor", pos: "n.", zh: "雕塑家" },
                 { en: "additionally", pos: "adv.", zh: "此外" },
                 { en: "peculiar", pos: "adj.", zh: "奇特的；特有的" },
+                // ===== 题库9: 321-360 =====
                 { en: "mineral", pos: "n.", zh: "矿物" },
                 { en: "authenticated", pos: "v.", zh: "鉴定（过去式）" },
                 { en: "surviving", pos: "adj./v.", zh: "幸存的；存活（现在分词）" },
@@ -1255,6 +1259,7 @@
                 { en: "ceaseless", pos: "adj.", zh: "不停的" },
                 { en: "sandblasting", pos: "n.", zh: "喷砂" },
                 { en: "pounding", pos: "n./v.", zh: "重击（现在分词）" },
+                // ===== 题库10: 361-400 =====
                 { en: "hollowed", pos: "adj./v.", zh: "挖空的（过去式）" },
                 { en: "limestone", pos: "n.", zh: "石灰石" },
                 { en: "formations", pos: "n.", zh: "形成物；地层（复数）" },
@@ -1294,6 +1299,8 @@
                 { en: "eager", pos: "adj.", zh: "渴望的" },
                 { en: "atlas", pos: "n.", zh: "地图集" },
                 { en: "contained", pos: "v.", zh: "包含（过去式）" },
+                { en: "influence", pos: "n./v.", zh: "影响" },
+                // ===== 题库11: 401-440 =====
                 { en: "innovative", pos: "adj.", zh: "创新的" },
                 { en: "dissemination", pos: "n.", zh: "传播" },
                 { en: "catalyst", pos: "n.", zh: "催化剂" },
@@ -1334,6 +1341,7 @@
                 { en: "presence", pos: "n.", zh: "存在；出席" },
                 { en: "monumental", pos: "adj.", zh: "纪念性的；巨大的" },
                 { en: "dwelling", pos: "n.", zh: "住所" },
+                // ===== 题库12: 441-480 =====
                 { en: "sprawling", pos: "adj./v.", zh: "蔓延的；延伸（现在分词）" },
                 { en: "urban", pos: "adj.", zh: "城市的" },
                 { en: "complex", pos: "adj./n.", zh: "复杂的；综合体" },
@@ -1376,24 +1384,24 @@
                 { en: "simultaneous", pos: "adj.", zh: "同时发生的" }
             ];
 
-            // 验证数量
-            console.log('总单词数:', ALL_WORDS.length);
+            // 验证数据完整性
+            console.log('总单词数:', ALL_WORDS.length); // 应为480
+            const influenceCount = ALL_WORDS.filter(w => w.en === 'influence').length;
+            console.log('influence 出现次数:', influenceCount); // 应为3
 
-            // 按范围分组 (每40个一组, 1-based)
+            // ====== 以下为程序逻辑 ======
             function getWordsByRange(rangeNum) {
                 const start = (rangeNum - 1) * 40;
                 const end = Math.min(start + 40, ALL_WORDS.length);
                 return ALL_WORDS.slice(start, end);
             }
 
-            // 获取范围标签
             function getRangeLabel(rangeNum) {
                 const start = (rangeNum - 1) * 40 + 1;
                 const end = Math.min(start + 39, 480);
                 return `题库${rangeNum} (${start}-${end})`;
             }
 
-            // 全局状态
             let currentSequence = [],
                 currentIndex = 0,
                 correctCount = 0,
@@ -1450,7 +1458,7 @@
                 matchFeedbackMsg = $('matchFeedbackMsg'),
                 matchNextBtn = $('matchNextBtn');
 
-            // 语音相关
+            // 语音
             function speakWord(text) {
                 if (!text || !window.speechSynthesis) return;
                 window.speechSynthesis.cancel();
@@ -1517,7 +1525,7 @@
                 setTimeout(() => { if (quizMode !== 'match') feedbackMsgDiv.innerHTML = '🤔 选择一个释义～'; }, 1500);
             });
 
-            // 工具函数
+            // 工具
             function getRandomDistractors(correctZh, rangeNum) {
                 const used = new Set([correctZh]);
                 const pool = [];
@@ -1573,7 +1581,7 @@
                 matchTotalCount = count;
                 matchPairedCount = 0;
                 matchSelectedId = null;
-                const leftItems = round.map(w => ({ id: w.en, text: w.en + ' (' + w.pos + ')', type: 'en', pos: w.pos }));
+                const leftItems = round.map(w => ({ id: w.en, text: w.en + ' (' + w.pos + ')', type: 'en' }));
                 const rightItems = round.map(w => ({ id: w.en, text: w.zh, type: 'zh' }));
                 leftItems.sort(() => Math.random() - 0.5);
                 rightItems.sort(() => Math.random() - 0.5);
